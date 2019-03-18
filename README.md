@@ -3,4 +3,4 @@ Dr. Jason Gallant
 Michigan State University
 ****
 
-[Introduction](introduction.md)
+1. [Introduction](introduction.md) - Background on sequencing biochemistry and what RNA-seq is all about
