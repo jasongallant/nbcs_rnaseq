@@ -32,18 +32,19 @@ xeyes
 2. [Dr. Salazar's Lecture Notes]() - Nanopore Sequencing
 
 *April 2, 2019*
-1. <INSERT HERE>
+1. [ONT Manual for Direct RNA Sequencing](direct-rna-sequencing-sqk-rna002-DRS_9080_v2_revB_22Nov2018.pdf)
+2. [ONT Protocol for Direct RNA Sequencing](SQK-RNA002_protocol.pdf)
 
 *April 3, 2019*
 
-1. 14:30 [Computing & Command Line Basics; 30 min](computing.md) - A Quick Introduction to High Performance Computing and a Tutorial on the Command Line
-2. 15:00 [Practical #1; 30 min](reads_and_qc.md) - An review of the RNA-seq workflow at "high speed", examining FASTQ Files and evaluating data quality
-3. 15:30  Break - 15 min
-4. 15:45 [Practical #2; 30 min](transcriptome_assembly.md) - An overview of de-novo transcriptome assembly using Trinity.  Examination of Trinity transcriptome and evaluation of outputs.
-5. 16:15 [Practical #3; 30 min](read_alignment.md) - An overview of alignments, aligning Illumina reads and Oxford Nanopore reads
-6. 16:45 Break - 15 min
-7. 17:00 [Practical #4; 30 min](nanopore_vs_illumina.md) - Comparing Illumina and Oxford Nanopore data.  Coverage, errors and other considerations.
-8. 17:30 [Practical #5; 15-30 min](wrap-up.md) - Wrap-up and Review
+1. **14:30:** [Computing & Command Line Basics; 30 min](computing.md) - A Quick Introduction to High Performance Computing and a Tutorial on the Command Line
+2. **15:00:** [Practical #1; 30 min](reads_and_qc.md) - An review of the RNA-seq workflow at "high speed", examining FASTQ Files and evaluating data quality
+3. **15:30:**  Break - 15 min
+4. **15:45:** [Practical #2; 30 min](transcriptome_assembly.md) - An overview of de-novo transcriptome assembly using Trinity.  Examination of Trinity transcriptome and evaluation of outputs.
+5. **16:15:** [Practical #3; 30 min](read_alignment.md) - An overview of alignments, aligning Illumina reads and Oxford Nanopore reads
+6. **16:45:** Break - 15 min
+7. **17:00:** [Practical #4; 30 min](nanopore_vs_illumina.md) - Comparing Illumina and Oxford Nanopore data.  Coverage, errors and other considerations.
+8. **17:30:** [Practical #5; 15-30 min](wrap-up.md) - Wrap-up and Review
 
 ### Sources and Resources:
 [ANGUS Titus Brown - MSU](http://ged.msu.edu/angus/index.html)
