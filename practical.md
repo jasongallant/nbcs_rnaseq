@@ -1,5 +1,22 @@
-##### FASTQ Files
+# Practical on RNA-seq: From Test Tube to FASTQ File
 
+## How Illumina Data is Generated
+1.	We start with the RNA of the tissue/organisim/developmental stage of interest
+2.	Various quality checks of the RNA are performed  
+3.	The RNA is fragmented  
+4.	The RNA is converted to cDNA    
+5.	The cDNA is ligated with adapter + a unique "barcode" (if pooling samples).  We later can use this barcode to unmix pooled samples  
+6.	The cDNA is "size selected"-- for RNAseq this is ~ 250bp so that the 150bp reads are 'overlapping' (see below)  
+7.	Various quality checks of the library (the name for the result of the above process) are run  
+8.	Cluster generation occurs (cDNAs are hybridized to membrane, and bridge amplification leads to millions of clusters of clonally related DNAs)  
+9.	Sequencing begins on first "strand" direction, 150bp (or however many cycles)  
+10.	Sequencing begins on second "strand" direction, 150bp (or however many cycles)  
+11.	Importantly the data is a series of "pictures" of the flow cell - must be converted into A's T's G's and C's by basecalling software (performed by sequencing center).  
+12.	If pools are used, the data must be "demultiplexed", where data is then seperated by barcodes  
+13.	The "output" of this process are compressed, "FASTQ" files.
+
+## FASTQ Files
+In the interests of time and practical constraints, we have had steps 1-13 performed for us (though we saw last time how they were performed, when we prepared our Oxford Nanopore run)
 
 Let's take a look at one of these files.  The files are HUGE, so we are only going to peek using a commandline trick on our newly sequenced data that looks only at the first few lines of the data:
 
@@ -18,109 +35,31 @@ This command returns the following information:
 	@HWI-ST1348:49:D1C9EACXX:3:1101:1940:1994 1:N:0:ATCACG
 	NTTCTGGAGTTGGTCCTTGAGAATTTCGTGTATCCCTGGTACAGGTATTTGTCGCAGCTTTCCTGTGATTTGTGTGCCTCTCAATACACACAGATGTTAT
 
-###### Things to Note about the FASTQ Format:
+Things to Note about the FASTQ Format:
 + The first line always starts with @.  This contains the "metadata" describing the sequence (what cluster it comes from, what the barcode was, etc.)
 + The second line is the sequence of the read.
 + It is always followed by a + sign on the third line.
-+ Finally, the fourth line describes the quality scores of each base.  The quality scores are on a scale from 0-93.  They are encoded by a single ASCII character that corresponsds to a number from 0-93 to save space.
++ Finally, the fourth line describes the quality scores of each base.  The quality scores are on a scale from 0-93.  They are encoded by a single ASCII character that corresponds to a number from 0-93 to save space.
 
 Indeed, there are always four lines for every read in a FASTQ file.  Thus, if we count the lines and divide by 4, we can quickly determine how many reads are in our file, which is useful for determining how big our job will be down the line:
 
 	cat 468_3676_4097_N_MNIG_6656_ATCACG_R1.fastq.gz | echo $((`wc -l`/4))
 
 
-
-# Gallant Lab RNAseq Bootcamp (Day 2)
-Jason R. Gallant
-***
-
-### RNASeq Protocol Overview
-The RNAseq pipeline has several "steps" along the way.  Here is the basic overview of what we'll be doing to our sequence files:
-
-1.	Inspect the reads with FastQC
-2.	Clean the reads
-	+ Quality Filter
-	+ Remove Contaminating Sequences (Barcodes + Adapters)
-	+ Remove 'Orphaned' Reads
-2.  Digital Normalization (optional)
-3.	Perform DeNovo Assembly
-4.	Downstream Analysis
-	+ Quantification
-	+ Transcript Identification/Annotation (BLAST)
-	+ Clustering
-	+ Variant Calling, etc.
-	+ Differential Expression Analysis
-
-### Getting Organized
-
-By this time, you should have your data in hand.  I like to keep the data organized hierarchically by species, tissue, etc. for easy browsing later.  I also keep these files seperate from where I do my analyses.  This way I can always go back to the original files if disaster strikes. Regardless of your organization scheme, you should always take precautions with your hard-won raw data!
-
-The simplest way to get organized is to create a working directory, and create "symbolic links" within this directory to "point" to the files that you'll be working with.  Start by making a directory in a suitable location.
-
-	mkdir yourdirectory
-	cd yourdirectory
-
-Find the files you are interested in, and then make symbolic links in your new directory
-
-	ln -s /path/to/your/actual/files ./your_new_filename_here
-
-Another tried and true method is to create a text file "manifest" in your analysis or working directory that lists the files that you'll be working with.  This minimizes the number of files in your directory.  Often, I create a tab delmited list of my files like this:
-
-	torpedo	torpedo_R1.fastq.gz	torpedo_R2.fastq.gz
-	narcine	narcine_R1.fastq.gz	narcine_R2.fastq.gz
-
-In this case, the first column is the sample "name", the second column is the first read file, and the third column is the second read file and so forth.  You can add any number of columns to your text file to describe them.  You can pass information from this file you your python scripts as arguements, which may simplify your life when trying to automate things.
-
-Once you've decided on an organizaton scheme that works, you are ready to start getting to work!
-
-### Step 1. Connecting to the HPCC
-
-We will start by logging into the HPCC.  You can set up your ~/.ssh/config file so that you don't always have to type the server address:
-
-	Host hpcc
-		HostName gateway.hpcc.msu.edu
-		User jgallant
-
-	Host scc
-		HostName scc1.bu.edu
-		User jrg1
-
-
-Once you've set up your config file, type:
-
-	ssh hpcc
-
-and enter your assigned password.  You'll be placed in your home directory.
-
-The MSU HPCC is a very complex computer system with many features, rules, etc.  You should regularly consult the [User Manual](https://wiki.hpcc.msu.edu/display/hpccdocs/Documentation+and+User+Manual) to get a sense of how things work.  HPCC is set up so that you log in to a "gateway" node.  You can run very simple, short jobs on this (copying files, editing files, etc.)  For anything requiring specailzed software, or that will take a bit to run, you have to use the other nodes.  A list of nodes availabile is provided in the HPCC User Manual.
-
-### Step 2. Run FASTQC
+## Quality Checks
 
 To get the graphics displays to visualize the output, we need to connect to the HPCC in X-windows mode.
 
 	ssh -X hpcc
 	**enter password**
 
-To use FASTQC, you need to run on one of the developer nodes.  Check at login to see which one(s) are least being used for optimal performance (I frequently use amd-09 or intel-10).
-
-	ssh dev-amd09
-
-Finally, you need to load the FastQC software.  The HPCC has a nifty feature called "modules", which load software and their dependencies into your enviornment on-the-fly.
-
-	module load FastQC
-
 To run Fastqc type:
-
-	fastqc
-
-This will present you with a GUI that you can start to analyze your data with.  Pretty handy if you have a few files to look at.  There is a video walkthrough of how to use the GUI [here](http://www.youtube.com/watch?v=bz93ReOv87Y).
-
-You can also do your analysis on the command line.
 
 	fastqc yourfile.fastq.gz
 
 The software will update you on its progress as it makes its way through the file.
 Beware, this might take a while on very large files.  When FastQC is done with a file, it creates a directory (by default in the same directory as the input file, you can change this).  The directory created contains many output files:
+
 	fastqc_data.txt
 	fastqc_report.html
 	Icons
@@ -174,43 +113,6 @@ So, we now can see that if we type
 
 FASTQC will put the files where we like them, rather than where it feels like.
 
-### Your First Submission Script
-Each file takes some time to analyze, as you may have observed by now.  We can do this serially if we have some time on our hands, but this doesn't use the HPCC to its full potential.  Time to learn how to write a job script and harness the awesome power of parallel computing!
-
-This is a job submission script:
-
-	#!/bin/bash -login
-
-	### define resources needed:
-	### walltime - how long you expect the job to run
-	#PBS -l walltime=00:05:00
-
-	### nodes:ppn - how many nodes & cores per node (ppn) that you require
-	#PBS -l nodes=1:ppn=1
-
-	### mem: amount of memory that the job will need
-	#PBS -l mem=1gb
-
-	### you can give your job a name for easier identification
-	#PBS -N fastqc_${dumname}
-
-	### load necessary modules, e.g.
-	module load fastqc
-
-	### change to the working directory
-	cd /your/directory/of/data
-
-	### call your executable
-	fastqc ${dumname} -o ~/yourwork_directory
-
-Each line of the submissions script makes a request from the scheduler for the specified resources and runs your command.  We can do this on any number of files by running the following shell command:
-
-	cd /your/directory/of/data
-	for f in *.fastq.gz; do qsub -v dumname=$f dumbjob.qsub; done
-
-Voila!  You have just run your first parallel computing job!  Can you make it run better?  Play around with the options!
-
-
 ### Review
 Yesterday, we discovered with FASTQC that there are some issues that need to be resolved: sometimes bases on the ends of the reads are of lower quality.  We've also seen some adapter contamination as well.
 
@@ -234,66 +136,6 @@ A few that we've used with success in the lab are:
 4. [FASTX Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html)
 
 For this tutorial, we are going to use a combination of Trimmomatic and FASTX toolkit, which are pretty simple to operate.
-
-To get set up, we're going to have to grab some software first.
-
-
-### Compiling Software, Setting Up Your System Path: Using PIGZ as an Example.
-
-To conserve space on the server, we compress these rather large files.  In order to work with them, they need to be uncompressed, which takes time.  Using one processor to do this on a large file is fairly slow.  Fortunately, an enterprising soul has written software that uses multiple processors to unzip files in parallel.  This program is called PIGZ.
-
-Log into the HPCC, and create a home directory called "programs".  This is where you will store programs that are not installed "cluster-wide"  To download pigz and uncompress the downloaded file, type the following:
-
-	cd ~/programs
-	wget http://zlib.net/pigz/pigz-2.3.1.tar.gz
-	tar -zxvf pigz-2.3.1.tar.gz
-
-You will now have the "source code" for pigz available in your programs folder.  We need to compile this code in order to get it to run. Most software distributions come with instructions on how to compile the software-- this is included in a readme file or on the website that you got the software from.  Often, there are many dependencies, which you will have to also download and compile.  This is why we try to use the software on the cluster whenever possible-- it can be a long and drawn out process!
-
-Fortunately, pigz is pretty easy.  You can't compile code from the gateway node, so you need to connect to a developer node to proceed.
-
-	ssh dev-amd09
-	cd ~/programs/pigz-2.3.1/
-
-To compile, simply type:
-
-	make
-
-You'll see a lot of output from the compilation process.  When it's done, your directory will have the following
-
-	Makefile  pigz  pigz.1  pigz.c  pigz.o  pigz.pdf  pigz.spec  README  unpigz  yarn.c  yarn.h  yarn.o  zopfli
-				^															^
-
-The two files indicated by the arrows are the "executables".  As of right now, you will only be able to call these commands if you type the full path name to the software, which can be a bit annoying.  To get around this, we need to place our executables in a place where they are easily found in the future.  Typically, I keep all of the executables in a "bin" folder inside my home directory:
-
-	mkdir ~/bin
-	mv pigz unpigz ~/bin
-
-Now, we need to tell system where to look for these files in the future.  To do this, we need to undertand a little something about how the operating system functions.  The UNIX operating system, like MacOSX, Windows, or Unix runs programs to interact with the file system.  One of these programs in unix is called generically the "shell" and might be equivalent to the "Finder" in MacOSX or "Windows Explorer" in the Windows OS.  There are many types of shells, which are chosen at login.  By default, we use the shell called "bash".  Like all programs in UNIX, it can be configured.  In order to edit the configuration of BASH, we need to look at the "hidden" files inside our home directory.  The -a flag allows us to see these hidden files
-
-	ls -a
-
-You will see a bunch of files with "." in front of them-- this denotes a file that is not normally visible when you list a directory.  You should see here that there is a file called ".bashrc"  Open and edit this with your favorite text editor (I use nano, but vim is also very popular)
-
-In this file, you'll see a bunch of settings-- the one we are interested in is the PATH variable, for now.  Whatever PATH says right now, we want to add our newly created bin directory, so that it looks in there for files and programs if it cannot find them in the usual locations.
-
-	PATH=\
-	/mnt/home/jgallant/bin:$PATH \
-	; export PATH
-
-Every time you want to add a folder to your path, just insert a new line between PATH=\ and the last line, followed by a "\" !
-
-In .bashrc, you can also change your command prompt to tell you all sorts of information, as well as create "aliases".   This is useful if you don't want to type the same flag every time you run a program.  Google around if you want to play with these settings.
-
-Once you are done, save the file.
-
-Normally, .bashrc is read only once at login.  You can either logout and log back in again to make the changes to your path settings, or simply type:
-	source .bashrc
-
-If you've typed any errors, bash will complain.  Now you should be able to call whatever is in your ~/bin/ folder from wherever you are on the server.
-
-An important thing to note is that while this works for you, when you qsub, the "worker" nodes will not have this information available to them unless you explicitly say so.  PATH is called an <i> environment variable </i>.  All environment variables can be passed to qsub by including the flag "-V"
-
 
 ### Run Trimmomatic to Remove Adapters
 
@@ -341,9 +183,7 @@ Fortunately, many smart people have been working to improve algorithms to make t
 
 The way to handle this is algorithmically simple-- the reads in a dataset are iterated through, and k-mers in each read are counted.  If the k-mers have been seen enough times previously (the number of times is a threshold set by user), the read is removed from the dataset.  If the k-mers have not been seen before, the read is retained.
 
-This has two practical outcomes:  the most obvious is that "redundant" data from high-coverage genes is removed from the dataset.  The second outcome, is less intiutitve, but important on memory usage.   Because of the 1-2% error rate, we  expect each read has an average of 1 sequencing error, which will introduce k number of erroneous k-mers.   Therefore, for every read that is removed, we remove k erronenous k-mers.  This apparently has minimal impact on the quality of the assembly (and in some cases, actually improves it!).  The intrested can check out this paper by [Titus Brown](http://arxiv.org/pdf/1203.4802v2.pdf) to get more details.
-
-
+This has two practical outcomes:  the most obvious is that "redundant" data from high-coverage genes is removed from the dataset.  The second outcome, is less intiutitve, but important on memory usage.   Because of the 1-2% error rate, we  expect each read has an average of 1 sequencing error, which will introduce k number of erroneous k-mers.   Therefore, for every read that is removed, we remove k erronenous k-mers.  This apparently has minimal impact on the quality of the assembly (and in some cases, actually improves it!).  The interested can check out this paper by [Titus Brown](http://arxiv.org/pdf/1203.4802v2.pdf) to get more details.
 
 ### Trinity
 
