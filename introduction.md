@@ -25,7 +25,6 @@ New developments have brought new technologies-- so called "third generation" te
 These "third generation" techniques theoretically allow for the analysis of entire molecules of DNA or RNA in one go-- a big improvement to say the least.  Compared to Illumina, which is fairly mature, "third generation" approaches are are more cutting edge, which means rapid improvement.  Throughput (as of 2018) is lower than Illumina sequencing (as of 2018, it is 10–30 GB per flowcell or about 3-10 human genomes), though this number varies widely from experimenter to experimenter.  Error rates in sequencing are also quite high: the latest chemistry (as of 2018) suggests about 2-13% errors.  This compares to about 0.25% in Illumina reads (as of 2018).  Watch the video below to see how this all works:
 [![Nanopore Sequencing](https://i.vimeocdn.com/video/734700212_640.jpg)](https://vimeo.com/297106166 "Nanopore Sequencing")
 
-
 ### What is RNAseq?
 ****
 RNA-seq is a technique that considers the abundance of RNAs in a tissue sample.  To understand the meaning of what RNA-seq is really doing, you have to know a little bit about the significance of RNA in the biology of cells.  Biologists have a model of how cells utilize their genomic information, which is termed "The Central Dogma", and is summarized nicely in this figure:
