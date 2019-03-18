@@ -116,7 +116,7 @@ FASTQC will put the files where we like them, rather than where it feels like.
 ### Review
 Yesterday, we discovered with FASTQC that there are some issues that need to be resolved: sometimes bases on the ends of the reads are of lower quality.  We've also seen some adapter contamination as well.
 
-###What are adapters, anyway?
+### What are adapters, anyway?
 
 ![Cluster Generation Overview](http://tucf-genomics.tufts.edu/images/faq02_pic01.jpg?1378237298)
 
