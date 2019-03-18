@@ -1,5 +1,6 @@
 # Neurobiología de la Conducta Social : RNA-seq
 Dr. Jason Gallant, Michigan State University, USA
+
 Dr. Vielka Salazar, Cape Breton University, Canada
 ****
 
