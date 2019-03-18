@@ -47,8 +47,8 @@ xeyes
 **17:30:** [Practical #5; 15-30 min](wrap-up.md) - Wrap-up and Review
 
 ### Sources and Resources:
-[ANGUS Titus Brown - MSU](http://ged.msu.edu/angus/index.html)
-[Eel Pond Tutorial](https://khmer-protocols.readthedocs.org/en/v0.8.4/mrnaseq/index.html)
-[Trinity RNAseq](http://trinityrnaseq.sourceforge.net)
-[Broad Institute Genome Bootcamp](http://www.broadinstitute.org/scientific-community/science/platforms/genome-sequencing/broadillumina-genome-analyzer-boot-camp)
-[Colorado State Computational Biology and Genomics Workshop](https://dbsloan.github.io/TS2018/)
++ [ANGUS Titus Brown - MSU](http://ged.msu.edu/angus/index.html)
++ [Eel Pond Tutorial](https://khmer-protocols.readthedocs.org/en/v0.8.4/mrnaseq/index.html)
++ [Trinity RNAseq](http://trinityrnaseq.sourceforge.net)
++ [Broad Institute Genome Bootcamp](http://www.broadinstitute.org/scientific-community/science/platforms/genome-sequencing/broadillumina-genome-analyzer-boot-camp)
++ [Colorado State Computational Biology and Genomics Workshop](https://dbsloan.github.io/TS2018/)
