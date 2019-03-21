@@ -70,10 +70,10 @@ You should get a separate window that displays a pair of eyes that follow the mo
 + **15:00:** [Practical #1](reads_and_qc.md) - An review of the RNA-seq workflow at "high speed", examining FASTQ Files and evaluating data quality
 + **15:30:**  Break - 15 min
 + **15:45:** [Practical #2](transcriptome_assembly.md) - An overview of de-novo transcriptome assembly using Trinity.  Examination of Trinity transcriptome and evaluation of outputs.
-+ **16:15:** [Practical #3](read_alignment.md) - An overview of alignments, aligning Illumina reads and Oxford Nanopore reads
++ **16:15:** [Practical #3](alignment.md) - An overview of alignments, aligning Illumina reads and Oxford Nanopore reads
 + **16:45:** Break - 15 min
 + **17:00:** [Practical #4](nanopore_vs_illumina.md) - Comparing Illumina and Oxford Nanopore data.  Coverage, errors and other considerations.
-+ **17:30:** [Practical #5](wrap-up.md) - Wrap-up and Review
++ **17:30:** Wrap-up and Review
 
 ### Sources and Resources:
 + [ANGUS Titus Brown - MSU](http://ged.msu.edu/angus/index.html)
