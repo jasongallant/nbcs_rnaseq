@@ -74,8 +74,8 @@ Here's another example of how we can use pipes effectively.  In this case, we wa
 To run Fastqc type:
 
 ```bash
-	module load FastQC/0.11.5-Java-1.8.0_162
-	fastqc 74_brain_S26_L002_R1_001.fastq.gz
+module load FastQC/0.11.5-Java-1.8.0_162
+fastqc 74_brain_S26_L002_R1_001.fastq.gz
 ```
 
 The software will update you on its progress as it makes its way through the file.
@@ -93,7 +93,7 @@ produces:
 The fastqc_report.html contains a graphical summary which you can open in a web browser (TODO: loads are slow, XWINDOWS IS pretty unresponsive--consider moving to efishgenomics?)
 
 ```bash
-	firefox 74_brain_pre_fastqc/74_brain_S26_L002_R1_001_fastqc.html
+firefox 74_brain_pre_fastqc/74_brain_S26_L002_R1_001_fastqc.html
 ```
 
 This produces a lot of information!  Let's walk through some of the highlights.  Examine the report and try to answer the following questions:
@@ -147,12 +147,12 @@ trimmomatic Command
 To run Fastqc type:
 
 ```bash
-	module load FastQC/0.11.5-Java-1.8.0_162
-	fastqc 74_brain_S26_L002_R1_001.fastq.gz.PwU.qtrim.fq -o ./74_brain_post_fastqc/
+module load FastQC/0.11.5-Java-1.8.0_162
+fastqc 74_brain_S26_L002_R1_001.fastq.gz.PwU.qtrim.fq -o ./74_brain_post_fastqc/
 ```
 
 ```bash
-	firefox ./74_brain_post_fastqc/74_brain_S26_L002_R1_001.fastq.gz.PwU.qtrim_fastqc.html
+firefox ./74_brain_post_fastqc/74_brain_S26_L002_R1_001.fastq.gz.PwU.qtrim_fastqc.html
 ```
 How did we do?  does adapter contamination look better?
 
