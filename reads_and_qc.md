@@ -26,9 +26,9 @@ Though we already talked about it in lecture, this is a quick review of how Illu
 To get the graphics displays to visualize the output, we need to connect to the HPCC in X-windows mode.
 
 ```bash
-	ssh -XY [classx]@hpcc.msu.edu
-	#enter password
-	ssh dev-intel18 # connect to an interactive 'development' node
+ssh -XY [classx]@hpcc.msu.edu
+#enter password
+ssh dev-intel18 # connect to an interactive 'development' node
 ```
 
 ### Step 2: Examining FASTQC Files

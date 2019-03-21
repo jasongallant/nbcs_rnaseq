@@ -62,7 +62,6 @@ cd ${SLURM_SUBMIT_DIR}
 source htseq/bin/activate
 
 htseq-count -s no -r pos -t gene -i ID -f bam 74_brain.sorted.bam bgaud_genome.genesonly.gff > brain74.counts
-
 ```
 
 Now that we've got the count data, we need to have a look at it.  We're going to fire up R and have a quick look:
@@ -70,6 +69,7 @@ Now that we've got the count data, we need to have a look at it.  We're going to
 ```bash
 module load R #insert appropriate Version
 R
+```
 
 ```R
 require(data.table)
