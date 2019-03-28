@@ -1,5 +1,3 @@
-# Transcriptome Assembly
-
 ## Background Information (5-10 min)
 What exactly is a <i> transcriptome </i> anyway?  Gene expression is a very dynamic process-- a transcriptome can be thought of as a "snapshot" of this process, or as a collection of all of the genes that are expressed in a particular tissue at a particular time.  An example might be brain during early development, or a skeletal muscle after exercise.  Our sequenced mRNA is a sample of the expressed genes.
 
@@ -66,7 +64,7 @@ Trinity.pl --seqType fq --max_memory 150G --left 74_brain_S26_L002_R1_001.fastq.
 
 + `--SeqType` specifies the type of input file (in our case Fastq).
 + `--max_memory` specifies the amount of RAM to use, selected proportional to the amount of reads, and has to be determined somewhat empirically.  Good to set high to ensure everything stays running!)  Also note that this should be slightly less than the total memory requested for the job, as Trinity runs programs in the background to monitor the status of things.
-+ `--left` and `--right` specify the R1 files and R2 files from the sequencer.  Note the `--trimmomatic` flag which automagically applies MacManes' reccomended filters by default!
++ `--left` and `--right` specify the R1 files and R2 files from the sequencer.  Note the `--trimmomatic` flag which automagically applies MacManes' recommended filters by default!
 + `--output` specifies the name of the directory
 + `--CPU` specfies the number of CPUs that can be utilized to run calculations in parallel can use.  Pick this carefully, too many and the job won't run!
 
@@ -91,6 +89,184 @@ squeue
 
 Impressive, eh?
 
-### Examining Trinity output: (TODO)
+### Examining and Evaluating Trinity output
+(ideas from: https://github.com/griffithlab/rnaseq_tutorial/wiki/Trinity-Assembly-And-Analysis)
 
-## Module 2 Review: (TODO)
+Let's take a look at the fruits of our labor by just peeking at the top of the Transcriptome assembly using the following command:
+
+```bash
+head bgaud_74_brain.trinity.fasta
+```
+
+```
+>TRINITY_DN8_c0_g1_i1 len=714 path=[0:0-713]
+CCAGCGTGTTGGTGCAGTCGAAGTCGCACACGTTCCGCTCACACTCGTCCACGTCTAGCAAACACACGCGCGCGGACGAGGTCTTGGGTCACCACAGGCAGGGATGAAGACGGGAGCTCCAGCCCAAATGAATGACGTGCCTGAGACGTCTTGAGCTTGTTATTTGTGTGATGTTTGAGGTGATATTTGTAATACTGAAACTACCAAAAGGCCAGATAATACATGGTAAATTCAGCGTCTGGGGCGTTTACGCAGGGTTAACTGGTTTATAACGCCCTCTAGTGGTAACTGGACTGCATGTCCATAGAGGTGACTGTCAGTGGTCTGTAGCAAATATGCCAGTGCTGATGGGCACAGTGAATTGGACAGAGTTCAAGTGACACTAATGGTGGGAGGAACTCTGGGAACCTAGACTGGAGTTCTGGGTGGCTTCAGCTTTGCACTGGAAGGCTGCAGCTCCCTTTTCCAAAAGAACAGAAGAGACACGGGACGAACAGAGACGATAAAGAGGACAGAGAGAAGCAGAGACAATAGGGAGGACAGGGAGCTGTGGAGCATGAAAACTTTGCCCCAAGAAACCACAGGGGAATTCAGAGGGTAAGGAGGGGAGGACTTTCATCCAAAATTCAGCCGTTACATAACAGTGTGTTGTTCGTGTGTTTGTGTGTGTGTGTGTGTTCTCTTACCCTGGCACTCGCGGGAGGTGAAGTTATA
+>TRINITY_DN8_c0_g2_i1 len=869 path=[0:0-247 2:248-868]
+````
+There is a lot of information here!  You should be pleased to see assembled transcripts at this point.  This is a FASTA formatted file a way of storing sequence data in plain text.  The first line is the "header" line demarked by the `>` character.  Following this is the transcript name.  This has a fairly rigid format:
+
++ In the example above, the accession 'TRINITY_DN1000|c115_g5_i1' indicates Trinity read cluster 'TRINITY_DN8_c0', gene 'g1', and isoform 'i1'. Because a given run of trinity involves many many clusters of reads, each of which are assembled separately, and because the 'gene' numberings are unique within a given processed read cluster, the 'gene' identifier should be considered an aggregate of the read cluster and corresponding gene identifier, which in this case would be 'TRINITY_DN8_g1'.
+
++ The Path information stored in the header (">TRINITY_DN8_c0_g2_i1 len=869 path=[0:0-247 2:248-868]") indicates the path traversed in the Trinity compacted de Bruijn graph to construct that transcript. In this case, node '0' corresponds to sequence range 0-247 of the transcript, and node '2' corresponds to sequence range 248-868 of the transcript. The node numbers are unique only in the context of a given Trinity gene identifier, and so graph nodes can be compared among isoforms to identify unique and shared sequences of each isoform of a given gene.
+
+#### Assembly metrics
+We can obtain basic assembly statistics using a utility built into Trinity by running the following (may take a few seconds-minutes to run):
+
+```bash
+module load Trinity/2.8.4
+TrinityStats.pl bgaud_74_brain.trinity.fasta
+```
+
+Which tells us a lot of additional information:
+
+```
+################################
+## Counts of transcripts, etc.
+################################
+Total trinity 'genes':	112282
+Total trinity transcripts:	173984
+Percent GC: 48.13
+
+########################################
+Stats based on ALL transcript contigs:
+########################################
+
+	Contig N10: 6587
+	Contig N20: 4916
+	Contig N30: 3999
+	Contig N40: 3246
+	Contig N50: 2624
+
+	Median contig length: 543
+	Average contig: 1245.04
+	Total assembled bases: 216617791
+
+
+#####################################################
+## Stats based on ONLY LONGEST ISOFORM per 'GENE':
+#####################################################
+
+	Contig N10: 5768
+	Contig N20: 4240
+	Contig N30: 3246
+	Contig N40: 2452
+	Contig N50: 1749
+
+	Median contig length: 392
+	Average contig: 840.78
+	Total assembled bases: 94404953
+```
+Questions:
++ How many genes have been assembled?
++ How many alternative splice variants?
++ What is the 'Contig N50'?
++ What does 'Contig N50' mean?
++ Why would this be important?
+
+#### What's an N50?
+(from: https://www.molecularecologist.com/2017/03/whats-n50/)
+Many people struggle initially to grasp the concept of N50, but we like to picture it like this. Imagine that you line up all the contigs in your assembly in the order of their sequence lengths (Fig. 1a). You have the longest contig first, then the second longest, and so on with the shortest ones in the end. Then you start adding up the lengths of all contigs from the beginning, so you take the longest contig + the second longest + the third longest and so on — all the way until you’ve reached the number that is making up 50% of your total assembly length. That length of the contig that you stopped counting at, this will be your N50 number (Fig. 1b).
+
+![](./images/n50.jpg)
+
++ The total number of 'genes' is the number of unique transcript identifier prefixes (without the `_i` isoform numbers).
++ You'll also see 'Contig N50' values reported. How useful is N50 in reality for assessing transcriptome quality?
++ RNA-Seq assembly can be easily biased by the assembler generating many non-independent isoforms for the same 'gene', artificially inflating N50.  
++ If coverage is high, sequencing errors and 'noise', and possibly 'incomplete' transcripts (transcripts in the process of being 'made' when RNA is sequenced could bias N50 downward.
+
+#### Evaluate Full Length Transcripts
+
+There's another way to assess the 'completeness' of a transcriptome assembly: by evaluating the number of transcripts that code for a full protein.  We can do this by comparing the contents of our newly assembled transcriptome to a reference species.  Since we don't have a great reference (at the moment...) for *B. gauderio*, we'll compare it to the NCBI reference set of proteins from the zebrafish, *Danio rerio*.
+
+This is a somewhat time consuming step, so I've pregenerated this data for you to keep things moving.  Let's look at the code together, however.
+
+The data is sourced from this website, let's have a look:
+[https://www.ncbi.nlm.nih.gov/genome?term=danio%20rerio](https://www.ncbi.nlm.nih.gov/genome?term=danio%20rerio)
+
+```bash
+#DON'T run this code, just look!
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/GCF_000002035.6_GRCz11/GCF_000002035.6_GRCz11_protein.faa.gz
+gunzip GCF_000002035.6_GRCz11_protein.faa.gz
+mv GCF_000002035.6_GRCz11_protein.faa danio_protein.fa
+makeblastdb -in danio_protein.fa -parse_seqids -dbtype prot
+module load MAKER
+fasta_tool --chunks 200 bgaud_74_brain.trinity.fasta
+mkdir bgaud_split
+mv bgaud_74_brain.trinity_* bgaud_split/
+sbatch submit_blast_x.sb
+cat bgaud_blastp_results/*.blastx > ./bgaud_blastp.blastx
+sed '/^>/ s/|.*//' danio_protein.fa > danio_protein.mod2.fa
+```
+
+```bash
+## submit_blast_x.sb
+#!/bin/bash --login
+########## Define Resources Needed with SBATCH Lines ##########
+
+#SBATCH --time=02:00:00             # limit of wall clock time - how long the job will run (same as -t)
+#SBATCH --ntasks=1                  # number of tasks - how many tasks (nodes) that you require (same as -n)
+#SBATCH --cpus-per-task=5           # number of CPUs (or cores) per task (same as -c)
+#SBATCH --mem=4G                    # memory required per node - amount of memory (in bytes)
+#SBATCH --job-name blastx_danio_bgaud      # you can give your job a name for easier identification (same as -J)
+#SBATCH --array=0-203
+
+########## Command Lines to Run ##########
+
+module load BLAST+
+
+cd ${SLURM_SUBMIT_DIR}
+
+export BLASTDB=/mnt/gs18/scratch/users/jgallant/nbcs_rnaseq
+export   NCBI_CONFIG__BLAST__LONG_SEQID=1
+### change to the working directory where your code is located
+
+filenum=(`seq -w 000 203`)
+
+### call your executable
+blastx -db danio_protein.fa -query ./bgaud_split/bgaud_74_brain.trinity_${filenum[${SLURM_ARRAY_TASK_ID}]}.fasta -out ./bgaud_blastp_results/bgaud_74_brain_${filenum[${SLURM_ARRAY_TASK_ID}]}.blastx -evalue .000001 -outfmt 6 -num_alignments 1 -soft_masking true -lcase_masking -max_hsps 1
+```
+**Questions**
++ What is this code chunk doing?
++ What is the command `--array=0-203` doing?
++ What does the variable `${SLURM_ARRAY_TASK_ID}` represent?
+
+### Parallelism
+This example motivates an essential principle of high performance computing systems-- parallelism.  Our newly assembled transcriptome contains 173,984 transcripts.  If we were to sequentially BLAST search these against a database, it would take a long time (t).  This type of problem (where the tasks are not interdependent) is called an *embarassingly parallel* problem, where the tasks could be subdivided into chunks (N).  The speedup is therefore (t/N)
+
+![Parallelism](http://www.cs.ucsb.edu/~cappello/290b-2010-Fall/homework/2/piecework.png)
+
+In the first script, we take the query sequences (our transcriptome) and split it into 200 chunks-- so now BLAST only has to operate on 870 sequences at a time.
+
+### Analyze BLAST Results:
+
+Now that we've discussed how we obtain the data, time to do the analysis.  Our BLAST results are mashed back together into `bgaud_blastp.blastx`, we also need to supply the original FASTA file for the danio proteins, and give the report a name for looking at later:
+
+```bash
+module load Trinity/2.8.4
+analyze_blastPlus_topHit_coverage.pl ./bgaud_blastp.blastx bgaud_74_brain.trinity.fasta danio_protein.mod2.fa bgaud74_cov_report
+cat bgaud74_cov_report.hist | column -t
+```
+
+Here's what the results look like:
+```
+#hit_pct_cov_bin  count_in_bin  >bin_below
+100               11759         11759
+90                1376          13135
+80                1183          14318
+70                1290          15608
+60                1455          17063
+50                1528          18591
+40                1562          20153
+30                1836          21989
+20                2120          24109
+10                1734          25843
+```
+**Questions**
++ How did we do?  Is it a good assembly, or not really?  Use the data to interpret.
++ How might the assembly be improved based on what you know?
+
+## Module 2 Review:
+In this module, we learned:
++ What a transcriptome is, and how they are assembled
++ Considerations for running your own assembly, and how to use Trinity to perform an Assembly
++ How to evaluate a new assembly's quality using N50 and how many sequences encode "full length" proteins.

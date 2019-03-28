@@ -12,9 +12,6 @@ Contact Dr. Gallant (jgallant@msu.edu) with difficulties getting computers set u
 # Set Up Instructions:
 To enable courses to be taught as effectively as possible, you will need to be able to log in to the HPCC resources without difficulty before the class.  If you do not have an HPCC account, please install the appropriate software before the workshop but you will not be able to test that it works before the class. Please try to come 10-15 minutes early to get a temporary account, and test that you can log in.
 
-## File Transfer
-If you are taking the Introduction to HPCC/Computational Resources at MSU course you will  need to install a file transfer client. Ex. FileZilla (https://filezilla-project.org/) or  Cyberduck (https://cyberduck.io/?l=en)
-
 ## Connecting to HPCC
 For Mac users:
 Please install the latest version of Xquartz (you can follow the directions here: https://wiki.hpcc.msu.edu/display/hpccdocs/Installing+an+X-server++for+Macs)
@@ -66,13 +63,13 @@ You should get a separate window that displays a pair of eyes that follow the mo
 
 *April 3, 2019*
 
-+ **14:30:** [Computing & Command Line Basics](computing.md) - A Quick Introduction to High Performance Computing and a Tutorial on the Command Line
-+ **15:00:** [Practical #1](reads_and_qc.md) - An review of the RNA-seq workflow at "high speed", examining FASTQ Files and evaluating data quality
++ **14:30:** [Practical #1: Computing & Command Line Basics](computing.md) - A Quick Introduction to High Performance Computing and a Tutorial on the Command Line
++ **15:00:** [Practical #2](reads_and_qc.md) - An review of the RNA-seq workflow at "high speed", examining FASTQ Files and evaluating data quality
 + **15:30:**  Break - 15 min
-+ **15:45:** [Practical #2](transcriptome_assembly.md) - An overview of de-novo transcriptome assembly using Trinity.  Examination of Trinity transcriptome and evaluation of outputs.
-+ **16:15:** [Practical #3](alignment.md) - An overview of alignments, aligning Illumina reads and Oxford Nanopore reads
++ **15:45:** [Practical #3](transcriptome_assembly.md) - An overview of de-novo transcriptome assembly using Trinity.  Examination of Trinity transcriptome and evaluation of outputs.
++ **16:15:** [Practical #4](alignment.md) - An overview of alignments, aligning Illumina reads and Oxford Nanopore reads
 + **16:45:** Break - 15 min
-+ **17:00:** [Practical #4](nanopore_vs_illumina.md) - Comparing Illumina and Oxford Nanopore data.  Coverage, errors and other considerations.
++ **17:00:** [Practical #5](nanopore_vs_illumina.md) - Comparing Illumina and Oxford Nanopore data.  Coverage, errors and other considerations.
 + **17:30:** Wrap-up and Review
 
 ### Sources and Resources:
@@ -81,3 +78,4 @@ You should get a separate window that displays a pair of eyes that follow the mo
 + [Trinity RNAseq](http://trinityrnaseq.sourceforge.net)
 + [Broad Institute Genome Bootcamp](http://www.broadinstitute.org/scientific-community/science/platforms/genome-sequencing/broadillumina-genome-analyzer-boot-camp)
 + [Colorado State Computational Biology and Genomics Workshop](https://dbsloan.github.io/TS2018/)
++ [Griffith Lab RNA-seq Tutorial Wiki](https://github.com/griffithlab/rnaseq_tutorial/wiki/Trinity-Assembly-And-Analysis)
