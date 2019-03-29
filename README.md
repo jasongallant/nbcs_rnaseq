@@ -58,11 +58,10 @@ You should get a separate window that displays a pair of eyes that follow the mo
 2. [Dr. Salazar's Lecture Notes]() - Nanopore Sequencing
 
 *April 2, 2019*
-1. [ONT Manual for Direct RNA Sequencing](direct-rna-sequencing-sqk-rna002-DRS_9080_v2_revB_22Nov2018.pdf)
-2. [ONT Protocol for Direct RNA Sequencing](SQK-RNA002_protocol.pdf)
+1. [ONT Manual for Direct RNA Sequencing](images/direct-rna-sequencing-sqk-rna002-DRS_9080_v2_revB_22Nov2018.pdf)
+2. [ONT Protocol for Direct RNA Sequencing](images/SQK-RNA002_protocol.pdf)
 
 *April 3, 2019*
-
 + **14:30:** [Practical #1: Computing & Command Line Basics](computing.md) - A Quick Introduction to High Performance Computing and a Tutorial on the Command Line
 + **15:00:** [Practical #2](reads_and_qc.md) - An review of the RNA-seq workflow at "high speed", examining FASTQ Files and evaluating data quality
 + **15:30:**  Break - 15 min

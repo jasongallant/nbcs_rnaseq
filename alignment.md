@@ -1,15 +1,19 @@
 # Read Alignment
+We're going to switch gears now and begin to think about how we quantify expression for RNA-seq experiments.  
 
-## Background Information (5-10 min)
+Recall from my introductory lecture that the reads we obtain are directly proportional to the abundance of of the mRNA in the sample.  When we did denovo assembly, we treated this as redundant information, and performed normalization to remove this information.  Now that we have a reference that contains the sequences, we will take these reads and align them to our transcriptome.  Once they are aligned, we can simply count the reads to determine the relative expression levels of each gene.
 
-![Alignment Overview](http://www.nature.com/nrg/journal/v12/n10/images/nrg3068-f3.jpg)
+For this species, we fortunately have a genome available.  So that we can more easily compare the performance of Illumina and Oxford Nanopore data, we will be performing our alignments and read counting based on the genome, not the de-novo transcriptome we assembled.
 
-1.
+## Performing Alignments with Bowtie2
 
-Check out this video for a more detailed explanation: http://www.broadinstitute.org/partnerships/education/broade/trinity-screencast
+Let's log back into the HPCC
 
+```bash
+ssh user@hpcc
+```
 
-## Performing Alignments with Bowtie2 (~ 25 min)
+The first step is to perform the alignment-- let's take a look at the script that performs this step:
 
 ```bash
 ## submit_align.sb
@@ -31,18 +35,32 @@ module load samtools
 cd ${SLURM_SUBMIT_DIR}
 
 bowtie2 -p 16  -x bgaud -1 74_brain_S26_L002_R1_001.fastq.gz.PwU.qtrim.fq -2 74_brain_S26_L002_R2_001.fastq.gz.PwU.qtrim.fq | samtools view -bS - > 74_brain.bam
-```
-
-After the alignment is complete, we need to do a few little things to fix it up for the next steps:
-
-```bash
-module load samtools
 samtools sort 74_brain.bam > 74_brain.sorted.bam
 samtools index 74_brain.sorted.bam
-
 ```
 
-Next, we run an algorithm called HTSeq, which counts the reads algorithmically that overlap genes in the genome.  This is a very basic method of quantifying expression, but is central to the premise of RNAseq.  Dr. Hoke will be elaborating on this point more, but we'll need this data for our comparision of Illumina and Oxford Nanopore reads in the final section.
+## Using IGV to Examine Alignments
+Let's look at the alignments that we created in a slightly more graphical way than we have been.
+
+1. Go to http://software.broadinstitute.org/software/igv/download to obtain the software, and install
+2. Download (igv_session.xml)[igv_session.xml] to your local computer
+3. Open IGV and load `igv_session.xml`
+
+You should see a dataset that looks like this:
+
+![igv_screenshot](./images/igv_screenshot.jpg)
+
+**Questions**
+1. What are the blue bars at the top of the window representing?
+2. What are the green bars representing?
+3. What do the blue bars with lines connecting them represent?
+4. Hover over the mRNA sequence with your mouse.  What gene is this that we are looking at?
+5.  Do you think the gene is highly or lowly expressed?
+
+## Counting Reads with HTSeq
+Next, we run an algorithm called HTSeq, which counts the reads algorithmically that overlap genes in the genome.  This is a basic method of quantifying expression, but is central to the premise of RNAseq.  Dr. Hoke will discuss more advanced concepts in RNA-seq later this week.
+
+Let's go back to our terminal and check out the HTseq script:
 
 ```bash
 #!/bin/bash --login
@@ -55,26 +73,30 @@ Next, we run an algorithm called HTSeq, which counts the reads algorithmically t
 #SBATCH --job-name htseq_brain74      # you can give your job a name for easier identification (same as -J)
 
 ########## Command Lines to Run ##########
-
-
 cd ${SLURM_SUBMIT_DIR}
-
 source htseq/bin/activate
-
 htseq-count -s no -r pos -t gene -i ID -f bam 74_brain.sorted.bam bgaud_genome.genesonly.gff > brain74.counts
 ```
 
-Now that we've got the count data, we need to have a look at it.  We're going to fire up R and have a quick look:
-
+Now that we've obtained the count data, we need to have a look at it.  We're going to start up R and have a quick look at "genome wide" expression:
 ```bash
-module load R #insert appropriate Version
+module purge
+module load GCC/7.3.0-2.30  OpenMPI/3.1.1
+module load R/3.5.1-X11-20180604
 R
 ```
+
+Now that R is started, you should see the `>` prompt.  Run the following code:
 
 ```R
 require(data.table)
 dat<-fread('./brain74.counts')
 hist(log10(dat$V2), 100)
 ```
-
 The data will look like this: ![histogram](images/hist.jpg)
+
+**Questions**
+1.  Are the majority of genes expressed in this sample of B. gauderio brain?
+2.  What is the average expression of genes in our sample?
+3.  What is the maximum expression that we observed?
+4.  Can you think of some reasons why the number of reads would be inaccurate for determining expression levels?
