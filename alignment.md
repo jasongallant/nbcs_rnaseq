@@ -90,13 +90,45 @@ Now that R is started, you should see the `>` prompt.  Run the following code:
 
 ```R
 require(data.table)
-dat<-fread('./brain74.counts')
-hist(log10(dat$V2), 100)
+dat<-fread('./bgaud_counts_and_gene_info.txt')
+dat<-dat[order(-Counts),]
+hist(log10(dat$Counts), 100)
+head(dat)
 ```
 The data will look like this: ![histogram](images/hist.jpg)
 
 **Questions**
 1.  Are the majority of genes expressed in this sample of B. gauderio brain?
-2.  What is the average expression of genes in our sample?
-3.  What is the maximum expression that we observed?
+2.  What is the average number of reads per gene in our sample?
+3.  What is the maximum number of reads per gene that we observe?
 4.  Can you think of some reasons why the number of reads would be inaccurate for determining expression levels?
+
+
+## Normalizing Read counts
+Two factors that will influence your counts are how *deeply* you sampled your transcriptome (coverage) and how long each transcript is.  If you just compare raw counts, particularly across experiments or between transcripts that are very different in terms of their length, you'll have a poor idea of expression.
+
+One way of normalizing is using a metric called TPM or Transcripts Per Kilobase Million.  Here’s how you calculate TPM:
+1. Divide the read counts by the length of each gene in kilobases. This gives you reads per kilobase (RPK).
+2. Count up all the RPK values in a sample and divide this number by 1,000,000. This is your “per million” scaling factor.
+3. Divide the RPK values by the “per million” scaling factor.
+
+Let's do this in R:
+
+```R
+library(data.table)
+new_fdata<-fread('./bgaud_counts_and_gene_info.txt')
+
+new_fdata$RPK<-new_fdata$Counts/(new_fdata$exon.lengths/1000)
+scale<-sum(new_fdata$RPK)/1000000
+new_fdata$TPM<-new_fdata$RPK/scale
+
+new_fdata<-new_fdata[order(-TPM),]
+
+head(new_fdata)
+
+hist(log10(new_fdata$TPM), 100)
+```
+
+**Questions**
+1. What is the most expressed gene in the B. gauderio brain according to this data?
+2. Did this change compared to the raw counts?  Why?

@@ -174,11 +174,44 @@ Many people struggle initially to grasp the concept of N50, but we like to pictu
 + RNA-Seq assembly can be easily biased by the assembler generating many non-independent isoforms for the same 'gene', artificially inflating N50.  
 + If coverage is high, sequencing errors and 'noise', and possibly 'incomplete' transcripts (transcripts in the process of being 'made' when RNA is sequenced could bias N50 downward.
 
+#### BLAST: Identifying Transcripts
+
+Currently, our transcripts are just sequences-- how do we figure out what sequence is what?  This process is called *annotation*.  There are many ways to generate annotations-- a common way is to use sequence homology with a well-annotated/model organism to identify the sequence.  To get an overview of this process, let's try doing a BLAST search of a particular gene:
+
+1.  Visit https://blast.ncbi.nlm.nih.gov/Blast.cgi
+2. Choose "blastx"
+3. Paste this sequence into the query text area:
+```
+>augustus_masked-258-processed-gene-16.2-mRNA-1
+ATGGAAGAAATCTTCAAGGATCAGGACCTTTTGTCTTTCAATGATTCATGGAAAAATTCT
+ACTTTTGGGAACGAAACTGACGGCGTAAACCAAACAGTGAACCCCCTAAAACGGAATGAA
+GAGGTAGCAAAGGTGGAGGTTACGGTATTGGCTTTAATCTTGCTTTTTGCGCTCGCCGGC
+AACATATGTGTCCTGGTTGCTATCCATACAGGCAAACACAGTCAATCTCGCATGTATTAC
+TTCATGAAGCACCTCAGCATTGCGGACCTGGTGGTGGCAATCTTTCAGGTCCTACCTCAA
+CTCATTTGGGACATTACTTTTCGCTTCTATGGACCAGACATCCTCTGCAGGTTGGTGAAA
+TACCTTCAAATAGTCGGAATGTTTGCCTCCACCTACATGCTTGTACTGATGTCCATAGAC
+AGGTGCTTGGCTATCTGCCAGCCACTACGCTCTTTGCATAAACGAAAGGACCGGTTTTAC
+GTTATTTTCTCCTGGGTCCTCAGCTTGCTTTTCAGTGTCCCACAAGTTTACATCTTTCAA
+CTGAGAGAAGTTGGATCCGGAGTATATGACTGTTGGGGAGACTTTGTACAGCCTTGGGGG
+GCCAAGGCATACATCACTTGGATAAGCCTCACCATCTACATTATTCCAGTTACAATACTA
+AGCATTTGCTACGGACTAATAAGTTTTAAAATATGGCAGAACTTTAAGCTGAAAACTAAG
+CGAGACCAGTGCATGACGCTGACACCAACCGCGTGGAAAAGCAGCGCGCTGGCGCGCGTC
+AGCAGCGTCAGACTCATCTCCAAGGCCAAGATCACCACCGTTAAAATGACGTTTGTCATC
+GTCCTGGCCTATGTCGTGTGCTGGACCCCGTTCTTCTTCGTACAGATGTGGTCGGCTTGG
+GACCCTGCAGCGCCCAGGGAAGGTAAGTTCAGTGTGTGA
+```
+4. Enter 'Danio rerio' into the organism box
+5. Click BLAST
+
+**Questions**
+1. What gene is this the sequence for?
+2. Are you sure??
+
 #### Evaluate Full Length Transcripts
 
-There's another way to assess the 'completeness' of a transcriptome assembly: by evaluating the number of transcripts that code for a full protein.  We can do this by comparing the contents of our newly assembled transcriptome to a reference species.  Since we don't have a great reference (at the moment...) for *B. gauderio*, we'll compare it to the NCBI reference set of proteins from the zebrafish, *Danio rerio*.
+Getting back to our task at hand-- There's another way to assess the 'completeness' of a transcriptome assembly: by evaluating the number of transcripts that code for a full protein.  We can do this by comparing the contents of our newly assembled transcriptome to a reference species.  Since we don't have a great reference (at the moment...) for *B. gauderio*, we'll compare it to the NCBI reference set of proteins from the zebrafish, *Danio rerio*.
 
-This is a somewhat time consuming step, so I've pregenerated this data for you to keep things moving.  Let's look at the code together, however.
+Performing this search using "graphical" blast would require you to copy and paste each of the 173,984 transcripts in and waiting.  This is obviously a time consuming step, so I've pre-generated this data for you to keep things moving.  Let's look at the code for how this works together:
 
 The data is sourced from this website, let's have a look:
 [https://www.ncbi.nlm.nih.gov/genome?term=danio%20rerio](https://www.ncbi.nlm.nih.gov/genome?term=danio%20rerio)
