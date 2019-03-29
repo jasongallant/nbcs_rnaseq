@@ -1,7 +1,7 @@
 # Read Alignment
 We're going to switch gears now and begin to think about how we quantify expression for RNA-seq experiments.  
 
-Recall from my introductory lecture that the reads we obtain are directly proportional to the abundance of of the mRNA in the sample.  When we did denovo assembly, we treated this as redundant information, and performed normalization to remove this information.  Now that we have a reference that contains the sequences, we will take these reads and align them to our transcriptome.  Once they are aligned, we can simply count the reads to determine the relative expression levels of each gene.
+Recall from my introductory lecture that the reads we obtain are directly proportional to the abundance of of the mRNA in the sample.  When we did de-novo assembly, we treated this as redundant information, and performed normalization to remove this information.  Now that we have a reference that contains the sequences, we will take these reads and align them to our transcriptome.  Once they are aligned, we can simply count the reads to determine the relative expression levels of each gene.
 
 For this species, we fortunately have a genome available.  So that we can more easily compare the performance of Illumina and Oxford Nanopore data, we will be performing our alignments and read counting based on the genome, not the de-novo transcriptome we assembled.
 
