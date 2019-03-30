@@ -43,7 +43,7 @@ samtools index 74_brain.sorted.bam
 Let's look at the alignments that we created in a slightly more graphical way than we have been.
 
 1. Go to http://software.broadinstitute.org/software/igv/download to obtain the software, and install
-2. Download [igv_session.xml](igv_session.xml) to your local computer
+2. Download [igv_session.xml](igv_session.xml) to your local computer by right clicking and selecting "Download Selected File As..."
 3. Open IGV and load `igv_session.xml`
 
 You should see a dataset that looks like this:

@@ -42,7 +42,7 @@ samtools view -bS aln.sam | samtools sort - aln.sorted.bam
 ### Using IGV to Examine Alignments
 Let's again look at the alignments that we created in a slightly more graphical way than we have been.
 
-1. Download [igv_session_ont.xml](igv_session_ont.xml) to your local computer
+1. Download [igv_session_ont.xml](igv_session_ont.xml) to your local computer by right clicking the link and selecting "Download Selected File As..."
 2. Open IGV and load `igv_session_ont.xml`
 
 **Questions**
