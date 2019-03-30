@@ -9,7 +9,7 @@ But what if you don't know what the genes look like?  Unfortunately, this is the
 
 A  computationally efficient method of putting the transcriptome back together is also a method that appeals to common sense-- this is called the "DeBruin Graph" approach.  This method has several steps, but we will walk through the basic process:
 
-![Assembly Overview](http://www.nature.com/nrg/journal/v12/n10/images/nrg3068-f3.jpg)
+![Assembly Overview](images/nrg3068-f3.jpg)
 
 1. Each read is broken down into overlapping strings of length "k"  (FYI, a k-mer is the name for a string of length k.)
 2. An ordered list of kmers is generated (hash table)-- each k-mer overlaps by (k-1 bases)
@@ -81,9 +81,12 @@ Trinity   24136 seconds (~7h)
   Rest (phase 2 - parallel assembly)       1833 seconds (30 min)
 ```
 
-Notice that the submission script for `Trinity` is written in a very strange seeming language that we haven't seen before: this is called [SLURM](https://slurm.schedmd.com), and is reserved for computationally intensive tasks.  Imagine you all ran this job at once, but there was only 50 CPUs up for grabs.  How would this work?  Now imagine hundreds or even thousands of people.  In order to ensure resources are used fairly, a rule system is enforced by the HPCC manager.  This sets up a queue to run jobs.  It's far from "first come first served", but integrates the length of the job you need to run, how often you use the cluster, how many resources you need, and prioritizes your job for the next available slot using algorithms.  During "high use" or when you need resource intensive jobs, your job may wait for days to run.  Most often, it will run fairly soon (minutes to hours after submission).   For a quick "peek" at the queue, type:
+Notice that the submission script for `Trinity` is written in a very strange seeming language that we haven't seen before: this is called [SLURM](https://slurm.schedmd.com), and is reserved for computationally intensive tasks.  Imagine you all ran this job at once, but there was only 50 CPUs up for grabs.  How would this work?  Now imagine hundreds or even thousands of people.  In order to ensure resources are used fairly, a rule system is enforced by the HPCC manager.  This sets up a queue to run jobs.  It's far from "first come first served", but integrates the length of the job you need to run, how often you use the cluster, how many resources you need, and prioritizes your job for the next available slot using algorithms.  During "high use" or when you need resource intensive jobs, your job may wait for days to run.  Most often, it will run fairly soon (minutes to hours after submission).   
+
+Login to the HPCC, and take a quick "peek" at the queue, type:
 
 ```bash
+ssh -XY user@hpcc.msu.edu
 squeue
 ```
 
