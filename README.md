@@ -5,9 +5,9 @@ Dr. Vielka Salazar, Cape Breton University, Canada
 ****
 
 ## Getting Set Up:
-All of what we need to do requires access to a remote server.  In order to complete the activity, you will need to bring your own laptop with the capability of connecting to via `ssh` to a server, and to run `x-windows` to look at graphical outputs.  Instructions for connecting to the server will be provided by your instructor.  You'll need to bring your laptop to participate in the course activities.  Please set up your laptop following *in advance* using the instructions appropriate for your operating system.
+All of what we need to do requires access to a remote server.  In order to complete the activity, you will need to bring your own laptop with the capability of connecting to via `ssh` to a server, and to run `x-windows` to look at graphical outputs.  Instructions for connecting to the server will be provided by your instructor.  You'll need to bring your laptop to participate in the course activities.  Please set up your laptop following *in advance*.
 
-[Instructions](instructions.md)
+Click here for detailed setup [instructions](instructions.md)
 
 ## Schedule and Course Materials:
 *April 1, 2019*
