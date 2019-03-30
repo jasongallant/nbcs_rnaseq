@@ -150,9 +150,8 @@ module load FastQC/0.11.5-Java-1.8.0_162
 fastqc 74_brain_S26_L002_R1_001.fastq.gz.PwU.qtrim.fq -o ./74_brain_post_fastqc/
 ```
 
-```bash
-firefox ./74_brain_post_fastqc/74_brain_S26_L002_R1_001.fastq.gz.PwU.qtrim_fastqc.html
-```
+74_brain_S26_L002_R1_001_fastqc.html](https://efishgenomics.integrativebiology.msu.edu/2019workshop/74_brain_post_fastqc/74_brain_S26_L002_R1_001_fastqc.html)
+
 How did we do?  does adapter contamination look better?
 
 
