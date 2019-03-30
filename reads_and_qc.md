@@ -90,11 +90,10 @@ produces:
 74_brain_S26_L002_R1_001_fastqc.html  74_brain_S26_L002_R1_001_fastqc.zip
 ```
 
-The fastqc_report.html contains a graphical summary which you can open in a web browser (TODO: loads are slow, XWINDOWS IS pretty unresponsive--consider moving to efishgenomics?)
+The fastqc_report.html contains a graphical summary which you can open in a web browser:
 
-```bash
-firefox 74_brain_pre_fastqc/74_brain_S26_L002_R1_001_fastqc.html
-```
+[74_brain_S26_L002_R1_001_fastqc.html](https://efishgenomics.integrativebiology.msu.edu/2019workshop/74_brain_pre_fastqc/74_brain_S26_L002_R1_001_fastqc.html)
+
 
 This produces a lot of information!  Let's walk through some of the highlights.  Examine the report and try to answer the following questions:
 
