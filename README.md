@@ -15,8 +15,9 @@ Click here for detailed setup [instructions](instructions.md)
 2. [Dr. Salazar's Lecture Notes]() - Nanopore Sequencing
 
 *April 2, 2019*
-1. [ONT Manual for Direct RNA Sequencing](images/direct-rna-sequencing-sqk-rna002-DRS_9080_v2_revB_22Nov2018.pdf)
-2. [ONT Protocol for Direct RNA Sequencing](images/SQK-RNA002_protocol.pdf)
+1. [Notes on Nanopore Sequencing](nanopore_notes.md)
+2. [ONT Manual for Direct RNA Sequencing](images/direct-rna-sequencing-sqk-rna002-DRS_9080_v2_revB_22Nov2018.pdf)
+3. [ONT Protocol for Direct RNA Sequencing](images/SQK-RNA002_protocol.pdf)
 
 *April 3, 2019*
 + **14:30:** [Practical #1: Computing & Command Line Basics](computing.md) - A Quick Introduction to High Performance Computing and a Tutorial on the Command Line
