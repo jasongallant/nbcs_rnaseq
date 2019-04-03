@@ -9,6 +9,67 @@ These "third generation" techniques theoretically allow for the analysis of enti
 ### What to Expect When You're Expecting (Nanopore Data)
 Theoretically, a MinION run should put out the same type of data as the de-novo Trinity Transcriptome assembly-- but with redundancy, as it will sequence transcripts proportionally to their abundance.  For de-novo applications, this is really exciting.  However, a major concern might be error rates, which for a 2,000bp transcript may be as many as 200bp.  
 
+
+## Log In
+```bash
+ssh -XY [classx]@hpcc.msu.edu
+#enter password
+ssh dev-intel18 # connect to an interactive 'development' node
+cd module_4
+```
+
+
+## Inspecting the Run
+
+Check out the run statistics:
+
+[Run Summary](./images/uruguay_nanopore_run_summary.pdf)
+
+
+## How many reads passed the quality filter?
+
+You should remember how to do this!!
+
+```bash
+echo $(cat FAK56435.fastq | wc -l)/4 | bc
+```
++ Question: How many reads are in this file?
+
+
+## Read Length Distribution
+
+We should have gotten some pretty long reads, after all, we are using nanopore!  Let's find our best read, passing filter:
+
+```bash
+awk 'NR%4 == 2 {lengths[length($0)]++} END {for (l in lengths) {print l, lengths[l]}}' FAK56435.fastq | sort -r -n -k1,1 | head
+```
+
+What does this read code for?
+
+How would we figure this out?
+
+
+
+What was the smallest read that passed filter?
+
+```bash
+awk 'NR%4 == 2 {lengths[length($0)]++} END {for (l in lengths) {print l, lengths[l]}}' FAK56435.fastq | sort -r -n -k1,1 | tail
+```
+
+What is the identity of our longest read?
+
+```bash
+cat FAK56435.fastq | paste - - - - | awk -F '\t' '{L=length($2);if(L>M) {M=L;R=$0;}} END {print R;}' | tr "\t" "\n" > longest_read.fq
+```
+
+```bash
+cat longest_read.fq
+```
+
+Question:
++ How would you figure out what the longest read is?
+
+
 ### QC
 
 We'll be using a program called [MinIONQC](https://github.com/roblanf/minion_qc) to perform QC.  For reasons that aren't entirely clear to your instructor, this step does not run on the HPCC, but runs great on his laptop!  I've gone ahead and pre-computed the results for you so that we can explore them together, simply.  It's fairly straightforward to run, here's the code below (for your reference)
@@ -51,10 +112,6 @@ Let's again look at the alignments that we created in a slightly more graphical 
 1. How does the alignment compare between the two platforms for a particular gene of interest?
 
 
-### RSEM Analysis on Two Alignments
-
-### Plot Outputs
-
 ```bash
 module purge
 module load GCC/7.3.0-2.30  OpenMPI/3.1.1
@@ -80,8 +137,14 @@ source htseq/bin/activate
 htseq-count -s no -r pos -t gene -i ID bgaud_ont.aln.sam ../../bgaud_genome_data/bgaud_genome.genesonly.gff > brain74_ont.counts
 ```
 
-### The Grand Finale: Comparing ONT and Illumina Empircially
+## What was the most expressed gene according to ONT?
 
+```bash
+head bgaud_counts_and_gene_info.illumina.and.ont.txt
+```
+
+
+### The Grand Finale: Comparing ONT and Illumina Empircially
 Now that we've obtained Read Counts for the two datasets-- how do they match up?  We'll use R on the HPCC to perform this calculation:
 
 ```bash
@@ -96,12 +159,13 @@ Run the following code:
 ```R
 library(data.table)
 dat<-fread('bgaud_counts_and_gene_info.illumina.and.ont.txt')
+dat$ONT_Counts<-dat$ONT_Counts+0.0001
+dat$Counts<-dat$Counts+0.0001
 
 plot(log10(dat$Counts),log10(dat$ONT_Counts))
 
 reads.lm = lm(log10(Counts) ~ log10(ONT_Counts), data=dat)
 summary(reads.lm)$r.squared
-
 ```
 
 **Questions**

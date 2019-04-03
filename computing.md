@@ -31,6 +31,7 @@ You can enter text after the `$`, which is the command prompt
 
 ```bash
 ssh -X USER@hpcc.msu.edu
+ssh dev-intel18
 ```
 
 The first time you connect, your computer is a bit cautious and warns you that it doesn't recognize the remote host-- that's OK, we can trust it.  Accept the connection.  You should then see a new command prompt that tells you you are connected to the remote host.

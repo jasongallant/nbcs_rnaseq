@@ -10,7 +10,10 @@ For this species, we fortunately have a genome available.  So that we can more e
 Let's log back into the HPCC
 
 ```bash
-ssh user@hpcc
+ssh -XY [classx]@hpcc.msu.edu
+#enter password
+ssh dev-intel18 # connect to an interactive 'development' node
+cd module_3
 ```
 
 The first step is to perform the alignment-- let's take a look at the script that performs this step:
@@ -76,6 +79,12 @@ Let's go back to our terminal and check out the HTseq script:
 cd ${SLURM_SUBMIT_DIR}
 source htseq/bin/activate
 htseq-count -s no -r pos -t gene -i ID -f bam 74_brain.sorted.bam bgaud_genome.genesonly.gff > brain74.counts
+```
+
+## What is the most expressed gene according to Illumina Data?
+
+```bash
+cat ../module_3/bgaud_counts_and_gene_info.txt | sort -r -n -k2,2 | head
 ```
 
 Now that we've obtained the count data, we need to have a look at it.  We're going to start up R and have a quick look at "genome wide" expression:

@@ -29,6 +29,7 @@ To get the graphics displays to visualize the output, we need to connect to the 
 ssh -XY [classx]@hpcc.msu.edu
 #enter password
 ssh dev-intel18 # connect to an interactive 'development' node
+cd module_1
 ```
 
 ### Step 2: Examining FASTQC Files

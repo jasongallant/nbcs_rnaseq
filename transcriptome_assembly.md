@@ -42,6 +42,13 @@ Some caveats about Trinity:
 2. Trinity can be restarted!  Yay!  If you get to a point in the process where Trinity suddenly dies, don't delete your work!  You can restart Trinity and it starts more or less where it left off.
 
 
+```bash
+ssh -XY [classx]@hpcc.msu.edu
+#enter password
+ssh dev-intel18 # connect to an interactive 'development' node
+cd module_2
+```
+
 ### How to Run Trinity
 Trinity has a lot of options, here's the "submission script":
 
