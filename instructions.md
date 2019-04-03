@@ -51,6 +51,6 @@ xeyes
 ```bash
 ssh dev-intel18
 bash /mnt/research/common-data/workshops/april2019/setup.sh
-```
+```x
 
 You should get a separate window that displays a pair of eyes that follow the mouse around.
