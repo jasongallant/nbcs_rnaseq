@@ -1,22 +1,22 @@
 
 ## 1. Summary
 
-  Click [summary.yaml](./RB7_A2/summary.yaml) to view
+  Click [summary.yaml](./bgaud_nano/summary.yaml) to view
 
 ## 1. Gb Per Channel
-![gb_per_channel_overview.png](./RB7_A2/gb_per_channel_overview.png)
+![gb_per_channel_overview.png](./bgaud_nano/gb_per_channel_overview.png)
 
 ## 2. Yield Over Time
-![yield_over_time.png](./RB7_A2/yield_over_time.png)
+![yield_over_time.png](./bgaud_nano/yield_over_time.png)
 
 ## 3. Length Histogram
-![length_histogram.png](./RB7_A2/length_histogram.png)
+![length_histogram.png](./bgaud_nano/length_histogram.png)
 
 ## 4. Quality Histogram
-![q_histogram.png](./RB7_A2/q_histogram.png)
+![q_histogram.png](./bgaud_nano/q_histogram.png)
 
 ## 5. Reads Per Hour. png
-![reads_per_hour.png](./RB7_A2/reads_per_hour.png)
+![reads_per_hour.png](./bgaud_nano/reads_per_hour.png)
 
 **Questions**
 + Could we have stopped the run sooner, or should we have kept going?
@@ -27,19 +27,19 @@
 These are less important, but still neat to examine!
 
 ## 6. Length Vs Quality
-![length_vs_q.png](./RB7_A2/length_vs_q.png)
+![length_vs_q.png](./bgaud_nano/length_vs_q.png)
 
 ## 7. Quality by Hour
-![q_by_hour.png](./RB7_A2/q_by_hour.png)
+![q_by_hour.png](./bgaud_nano/q_by_hour.png)
 
 ## 8. Yield by Length
-![yield_by_length.png](./RB7_A2/yield_by_length.png)
+![yield_by_length.png](./bgaud_nano/yield_by_length.png)
 
 ## 9. Channel Summary
-![channel_summary.png](./RB7_A2/channel_summary.png)
+![channel_summary.png](./bgaud_nano/channel_summary.png)
 
 ## 10. Flowcell Overview
-![flowcell_overview.png](./RB7_A2/flowcell_overview.png)
+![flowcell_overview.png](./bgaud_nano/flowcell_overview.png)
 
 ## 11. Length By Hour
-![length_by_hour.png](./RB7_A2/length_by_hour.png)
+![length_by_hour.png](./bgaud_nano/length_by_hour.png)
