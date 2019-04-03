@@ -23,6 +23,12 @@ xeyes
 ```
 You should get a separate window that displays a pair of eyes that follow the mouse around.  If this works, that should be all you need to be ready for the course.  If not, please come several minutes early and we will try to help you get online.
 
+Run the setup script in your home directory:
+
+```bash
+ssh dev-intel18
+bash /mnt/research/common-data/workshops/april2019/setup.sh
+```
 
 ## For WINDOWS users:
 We recommend installing Moba Xterm "home edition" (http://mobaxterm.mobatek.net/download-home-edition.html).   Please download the "Home Edition, Installer Version unless you are comfortable installing portable applications yourself.  This program provides both an SSH client (command line) and an X-Windows server system for running Graphical User Interface programs remotely (X11).
@@ -40,6 +46,11 @@ This should give you a command prompt.  If you type:
 
 ```bash
 xeyes
+```
+
+```bash
+ssh dev-intel18
+bash /mnt/research/common-data/workshops/april2019/setup.sh
 ```
 
 You should get a separate window that displays a pair of eyes that follow the mouse around.
