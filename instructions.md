@@ -48,9 +48,12 @@ This should give you a command prompt.  If you type:
 xeyes
 ```
 
+You should get a separate window that displays a pair of eyes that follow the mouse around.
+
+
+Finally, run the setup script to complete the process:
+
 ```bash
 ssh dev-intel18
 bash /mnt/research/common-data/workshops/april2019/setup.sh
-```x
-
-You should get a separate window that displays a pair of eyes that follow the mouse around.
+```

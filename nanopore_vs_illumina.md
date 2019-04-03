@@ -33,10 +33,12 @@ First, we've performed an alignment of the raw Nanopore data to the B. gauderio 
 This alignment takes a while, so we won't be running it due to time constraints, but let's have a look at the code that generates the alignment.
 
 ```bash
-minimap2 -L -ax splice -k14 -uf SIRV_E2.fa SIRV_ont-drna.fa > aln.sam
+~/minimap2/minimap2 -L -ax splice -k14 -uf ../../bgaud_genome_data/bgaud_genome.fa FAK56435.fastq > bgaud_ont.aln.sam
 #note the -L flag fixes cigar strings for conversion to bam
 module load samtools
-samtools view -bS aln.sam | samtools sort - aln.sorted.bam
+samtools view -O BAM -o bgaud_ont.bam bgaud_ont.aln.sam
+samtools sort bgaud_ont.bam -o bgaud_ont.sorted.bam
+samtools index bgaud_ont.sorted.bam
 ```
 
 ### Using IGV to Examine Alignments
@@ -75,7 +77,7 @@ Again, we'll run `HTSeq`, to count our nanopore reads per transcript.  In the in
 ########## Command Lines to Run ##########
 cd ${SLURM_SUBMIT_DIR}
 source htseq/bin/activate
-htseq-count -s no -r pos -t gene -i ID -f bam aln.sorted.bam bgaud_genome.genesonly.gff > brain74_ont.counts
+htseq-count -s no -r pos -t gene -i ID bgaud_ont.aln.sam ../../bgaud_genome_data/bgaud_genome.genesonly.gff > brain74_ont.counts
 ```
 
 ### The Grand Finale: Comparing ONT and Illumina Empircially
@@ -95,9 +97,9 @@ Run the following code:
 library(data.table)
 dat<-fread('bgaud_counts_and_gene_info.illumina.and.ont.txt')
 
-plot(log10(dat$counts),log10(dat$ONT.Counts))
+plot(log10(dat$Counts),log10(dat$ONT_Counts))
 
-reads.lm = lm(log10(counts) ~ log10(ONT.Counts), data=dat)
+reads.lm = lm(log10(Counts) ~ log10(ONT_Counts), data=dat)
 summary(reads.lm)$r.squared
 
 ```
